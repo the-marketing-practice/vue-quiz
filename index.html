@@ -1,0 +1,592 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+  <title>Document</title>
+  <style type="text/css">
+    @font-face {
+      font-family: 'Bariol';
+      src: url(bariol_regular-webfont.woff);
+      font-weight: normal;
+    }
+
+    @font-face {
+      font-family: 'Bariol';
+      src: url(bariol_bold-webfont.woff);
+      font-weight: bold;
+    }
+
+    /* @font-face {
+      font-family: 'Bariol';
+      src: url(bariol_thin-webfont.woff);
+      font-weight: lighter;
+    } */
+
+    body {
+      font-family: 'Bariol', Arial, Helvetica, sans-serif;
+      color: #000000;
+      box-sizing: border-box;
+      margin: 0
+    }
+
+    button {
+      font-family: 'Bariol', Arial, Helvetica, sans-serif;
+      font-size: 16px !important;
+    }
+
+    img {
+      border-radius: 50%;
+    }
+
+    .main-container {
+      width: 100%;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      margin-top: 5px
+    }
+
+    .inner-container {
+      border-radius: 2px;
+      padding: 20px;
+      max-width: 600px;
+      transition: all 1s linear;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0px 0px 3px #999999;
+      width: 100%;
+      min-height: 700px;
+    }
+
+    .inner-container-result {
+      border: 1px solid #cecece;
+      border-radius: 2px;
+      padding: 20px;
+      max-width: 600px;
+      transition: all 1s linear;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0px 0px 2px #999999;
+      width: 100%;
+      align-items: flex-start;
+    }
+
+    .flex-col {
+      display: flex;
+      flex-direction: row;
+    }
+
+    .flex-col-centered {
+      display: flex;
+      flex-direction: row;
+      justify-content: center
+    }
+
+    .flex-col-centered img {
+      margin: 20px 5px
+    }
+
+    .flex-g-2 {
+      margin-left: 30px;
+      flex-grow: 2;
+    }
+
+    .flex-g-1 {
+      flex-grow: 1;
+    }
+
+    .quiz-cta {
+      align-self: center;
+      display: inline-block !important;
+      outline: none !important;
+      text-decoration: none !important;
+      color: #FFFFFF !important;
+      padding: 10px 25px !important;
+      text-transform: uppercase !important;
+      font-size: 16px !important;
+      font-weight: 700 !important;
+      cursor: pointer;
+      background-color: #912884;
+      width: auto;
+      margin-top: 10px
+    }
+
+    .answer-container {
+      background: #f2f2f2;
+      width: 100%;
+      margin: 10px 0;
+      transition: box-shadow 0.2s ease;
+      border-width: 0px;
+      box-shadow: 0px 1px 2px #cccccc;
+    }
+
+    .answer-correct {
+      background: #009c53;
+      position: relative;
+      color: white;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .answer-correct::after {
+      content: "✓";
+      position: absolute;
+      top: 50%;
+      right: 20px;
+      color: white;
+      transform: translateY(-50%);
+      font-size: 30px;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .answer-wrong {
+      background: #c01d2e;
+      position: relative;
+      color: white;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .answer-wrong::after {
+      content: "✕";
+      position: absolute;
+      top: 50%;
+      right: 20px;
+      color: white;
+      transform: translateY(-50%);
+      font-size: 30px;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .answer-container:hover {
+      box-shadow: 0px 4px 9px #cccccc;
+      transition: box-shadow 0.2s ease;
+    }
+
+    .answer-text {
+      padding: 15px 50px 15px 20px;
+      text-align: left;
+      font-size: 12px;
+    }
+
+    .slide-fade-enter-active {
+      transition: all 1.3s ease;
+    }
+
+    .slide-fade-leave-active {
+      transition: all .1s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+    }
+
+    .slide-fade-enter,
+    .slide-fade-leave-to
+    /* .slide-fade-leave-active below version 2.1.8 */
+
+      {
+      transform: translateY(10px);
+      opacity: 0;
+    }
+
+    .question-position-text {
+      align-self: center;
+      font-size: 28px;
+    }
+
+    .answer-status-text {
+      text-transform: uppercase;
+      margin-bottom: 0px;
+    }
+
+    .percentage-result {
+      align-self: center;
+      font-size: 90px;
+    }
+
+    .percentage-container {
+      align-self: center;
+      height: 200px;
+      width: 200px;
+      border-radius: 50%;
+      background: #f2f2f2;
+      display: flex;
+      justify-content: center
+    }
+
+    .grats-text {
+      align-self: center;
+      justify-self: center
+    }
+
+    .voice-rec-container {
+      background: rgb(0, 0, 0);
+      display: flex;
+      justify-content: center;
+      flex-direction: column
+    }
+
+    .icon-left {
+      padding: 10px;
+      justify-self: center;
+      align-self: center
+    }
+
+    .text-white {
+      color: #FFFFFF
+    }
+
+    .p10 {
+      padding: 10px
+    }
+
+    .text-center {
+      align-self: center;
+      justify-self: center
+    }
+
+    .vid-rec:focus {
+      border: 0;
+      outline: none
+    }
+
+    .wrap {
+      flex-wrap: wrap
+    }
+
+    .animate-up-down {
+      position: relative;
+      animation: upDown 2s infinite linear
+    }
+
+    @-webkit-keyframes upDown {
+      0% {
+        transform: translateY(0)
+      }
+      33% {
+        transform: translateY(-20%)
+      }
+      66% {
+        transform: translateY(20%)
+      }
+      100% {
+        transform: translateY(0)
+      }
+    }
+
+    @keyframes upDown {
+      0% {
+        transform: translateY(0)
+      }
+      33% {
+        transform: translateY(-20%)
+      }
+      66% {
+        transform: translateY(20%)
+      }
+      100% {
+        transform: translateY(0)
+      }
+    }
+
+    @media screen and (max-width: 600px) {
+      .flex-col {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .flex-g-2 {
+        margin-left: 0;
+      }
+      .text-left-smcenter {
+        align-self: center;
+        justify-self: center
+      }
+      .voice-rec-container {
+        margin: 20px 30px;
+      }
+      .inner-container {
+        position: relative;
+        box-shadow: none
+      }
+      .answer-results-container{
+        position: absolute;
+        top:50%;
+        left: 0;
+        padding: 20px;
+        background: rgb(255, 255, 255);
+        transform: translateY(-50%);
+        box-shadow: 0px 0px 2px #000000;
+        z-index: 5;
+        margin: 5px
+      }
+      .quiz-cta {
+        width: 100%;
+      }
+      .overlay {
+        background: #0808083b;
+        z-index: 4;
+        position: absolute;
+        width: 100%;
+        height: 100vh;
+      }
+    }
+    #app {
+      height: 100vh;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <div class="overlay" v-if="rightWrong"></div>
+    <transition name="slide-fade">
+      <section class="main-container" v-if="questionsView">
+        <div class="inner-container">
+          <p class="question-position-text">
+            Q{{ questionNumber }}/{{ questionsTotalAmount }}
+          </p>
+          <div class="flex-col">
+            <div class="flex-g-1">
+              <img :src="questionsInfo.questionImage" width="150" />
+            </div>
+            <div class="flex-g-2">
+              <h2>
+                {{ questionsInfo.questionTitle }}
+              </h2>
+              <p>
+                {{ questionsInfo.introCopy }}
+              </p>
+            </div>
+          </div>
+          <h3> {{ questionsInfo.questionCopy }}</h3>
+
+          <div class="answers-container">
+            <button :value="questionsInfo.answerOneStatus" class="answer-container answer-text" @click="answerClicked">
+              <strong>A.</strong> {{ questionsInfo.answerOne }}
+            </button>
+            <button :value="questionsInfo.answerTwoStatus" class="answer-container answer-text" @click="answerClicked">
+              <strong>B.</strong> {{ questionsInfo.answerTwo }}
+            </button>
+            <button :value="questionsInfo.answerThreeStatus" class="answer-container answer-text" @click="answerClicked">
+              <strong>C.</strong> {{ questionsInfo.answerThree }}
+            </button>
+          </div>
+          <transition name="slide-fade">
+            <div v-if="rightWrong" class="answer-results-container">
+            <p class="answer-status-text">
+              <strong>{{ rightWrong }}</strong>
+            </p>
+            <p class="answer-result-copy">
+              {{ questionsInfo.afterAnswerCopy }}
+            </p>
+            <button v-if="notLastQuestion" @click="nextClicked" class="quiz-cta">
+              NEXT
+            </button>
+            <button v-else-if="lastQuestion" @click="lastClicked" class="quiz-cta">
+              FINISH
+            </button>
+          </div>
+          </transition>
+        </div>
+      </section>
+    </transition>
+    <transition name="slide-fade">
+      <section class="main-container" v-if="scoreView">
+        <div class="inner-container-result">
+
+
+          <div class="flex-col-centered wrap">
+            <div style="margin-right:30px">
+              <div class="percentage-container">
+                <h1 class="percentage-result">
+                  {{scorePercentage}}<sub style="font-size: 30px; vertical-align: middle">%</sub>
+                </h1>
+              </div>
+            </div>
+            <div style="align-self: center">
+              <h3 class="grats-text" style="margin-bottom: 0px;">Congratulations
+              </h3>
+              <p class="grats-text" t>You got
+                <strong>{{ score }}</strong> out of
+                <strong>{{ questionsTotalAmount }}</strong> questions correct</p>
+              <button @click="replay" class="quiz-cta">
+                REPLAY
+              </button>
+            </div>
+          </div>
+          <div class="flex-col-centered">
+            <h2 class="grats-text" style="margin-bottom: 0px; margin-top: 0px;">Share:&nbsp;
+            </h2>
+            <a target="_blank" :href="twitterShare">
+              <img src="https://themarketingpractice.com/wp-content/uploads/2019/04/Twitter-rec.jpg" />
+            </a>
+            <a target="_blank" :href="linkedinShare">
+              <img src="https://themarketingpractice.com/wp-content/uploads/2019/04/Linkedin-rec.jpg" />
+            </a>
+            <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fthemarketingpractice.com%2Finsights%2Fwhat-does-your-family-think-quiz%2F">
+              <img src="https://themarketingpractice.com/wp-content/uploads/2019/04/Facebook-rec.jpg" />
+            </a>
+          </div>
+          <div class="voice-rec-container">
+            <p class="p10 text-white text-center">
+              These are genuine answers.
+              <strong>Listen to the recordings</strong>
+            </p>
+            <video controls="true" name="media" width="100%" height="auto" class="vid-rec">
+              <source src="https://themarketingpractice.com/wp-content/uploads/2019/05/media.io_TMP_RecruitmentQuiz_SoundClips-2.mp4" type="video/mp4">
+            </video>
+          </div>
+
+      </section>
+
+    </transition>
+    <div v-if="scoreView" class="flex-col-centered animate-up-down">
+      <img src="https://themarketingpractice.com/wp-content/uploads/2019/04/flecha-circulo-gris-abajo.png" width="60" height="60" />
+    </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.9/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+
+    <script>
+      new Vue({
+        el: "#app",
+        data() {
+          return {
+            questionsTotalAmount: null,
+            quizPosition: 0,
+            questionNumber: null,
+            score: 0,
+            answers: document.getElementsByClassName("answer-container"),
+            questionsInfo: [],
+            rightWrong: "",
+            lastQuestion: "",
+            notLastQuestion: "",
+            questionsView: true,
+            scoreView: "",
+            scorePercentage: null,
+            twitterShare: null,
+            linkedinShare: null
+          }
+        },
+        mounted() {
+         axios({
+            method: 'get',
+            url: "questions.json" + '?nocache=' + new Date().getTime(), // Safari fix
+            withCredentials: true
+          }).then(response => {
+            this.questionsInfo = response.data.questions[this.quizPosition];
+            this.questionsTotalAmount = response.data.questions.length;
+          });
+          this.questionNumber = this.quizPosition + 1;
+        },
+        updated() {
+          // axios.get("questions.json").then(response => {
+          //   this.questionsInfo = response.data.questions[this.quizPosition];
+          // });
+           axios({
+            method: 'get',
+            url: "questions.json" + '?nocache=' + new Date().getTime(), // Safari fix
+            withCredentials: true
+          }).then(response => {
+            this.questionsInfo = response.data.questions[this.quizPosition];
+            this.questionsTotalAmount = response.data.questions.length;
+          });
+          this.questionNumber = this.quizPosition + 1;
+          this.twitterShareComputed();
+          this.linkedinShareComputed()
+        },
+        methods: {
+          twitterShareComputed() {
+            var computedUrlT = "https://twitter.com/intent/tweet?url=https://themarketingpractice.com/insights/what-does-your-family-think-quiz/&text=" + encodeURI("I got ") + this.score + encodeURI(" out of ") + this.questionsTotalAmount + encodeURI(" right on the TMP 'what does your family think you do' quiz - how will you do?");
+            this.twitterShare = computedUrlT
+          },
+          linkedinShareComputed() {
+            var computedUrl = "http://www.linkedin.com/shareArticle?url=https://themarketingpractice.com/insights/what-does-your-family-think-quiz/&title=" + encodeURI("I got ") + this.score + encodeURI(" out of ") + this.questionsTotalAmount + encodeURI(" right on the TMP 'what does your family think you do' quiz - how will you do?");
+            this.linkedinShare = computedUrl
+          },
+          disable: function () {
+            for (i = 0; i < this.answers.length; i++) {
+              this.answers[i].disabled = true;
+            }
+          },
+          enableRemove: function () {
+            for (i = 0; i < this.answers.length; i++) {
+              this.answers[i].disabled = false;
+              this.answers[i].classList.remove(
+                "answer-wrong",
+                "answer-correct"
+              );
+              this.rightWrong = null;
+              this.notLastQuestion = null;
+              this.lastQuestion = null;
+            }
+          },
+          highlightCorrect: function () {
+            for (i = 0; i < this.answers.length; i++) {
+              if (this.answers[i].value == "correct") {
+                this.answers[i].classList.add("answer-correct");
+              }
+            }
+          },
+          scrollToAnswer: function() {
+            window.scrollTo({
+              top: '100%',
+              left: 0,
+              behavior: 'smooth'
+            });
+          },
+          updateScore: function (e) {
+            this.score++;
+          },
+          answerClicked: function (e) {
+            this.scrollToAnswer()
+            var answer = e.target.value;
+            if (this.questionNumber == this.questionsTotalAmount) {
+              this.lastQuestion = true
+            } else {
+              this.notLastQuestion = true
+            };
+            if (answer == "correct") {
+              e.target.classList.add("answer-correct");
+              this.rightWrong = answer;
+              this.updateScore(e);
+              this.disable();
+            } else {
+              e.target.classList.add("answer-wrong");
+              this.rightWrong = answer;
+              this.highlightCorrect();
+              this.disable();
+            };
+          },
+          nextClicked: function (e) {
+            this.quizPosition++;
+            this.enableRemove();
+
+          },
+          lastClicked: function (e) {
+            this.scoreView = true;
+            this.questionsView = null;
+            this.calculatePercentage();
+          },
+          replay: function (e) {
+            this.quizPosition = 0;
+            this.score = 0;
+            this.scoreView = null;
+            this.questionsView = true;
+            this.lastQuestion = false;
+            this.rightWrong = null;
+            this.enableRemove();
+          },
+          calculatePercentage: function () {
+            var calculation = Math.round((this.score / this.questionsTotalAmount) * 100);
+            this.scorePercentage = calculation
+          }
+        }
+      });
+    </script>
+</body>
+
+</html>
